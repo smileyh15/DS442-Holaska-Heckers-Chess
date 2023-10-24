@@ -252,43 +252,138 @@ class AI:
 
     def calculateb(self,gametiles):
         value=0
+
+        def inRange(val):
+            if(val < 8 and val > 0):
+                return True
+            return False
+        def protectedByPawn(piece):
+            protectors = 0
+            piece_text = piece.pieceonTile.tostring()
+            if(piece_text.upper() == piece_text):
+                left = [y-1,x-1]
+                if(inRange(left[0]) and inRange(left[1])):
+                    if(gametiles[y-1][x-1].pieceonTile.tostring()=='P'):
+                        protectors += 1
+                right = [y-1,x+1]
+                if(inRange(right[0]) and inRange(right[1])):
+                    if(gametiles[y-1][x+1].pieceonTile.tostring()=='P'):    
+                        protectors += 1
+            if(piece_text.lower() == piece_text):
+                left = [y+1,x-1]
+                if(inRange(left[0]) and inRange(left[1])):
+                    if(gametiles[y+1][x-1].pieceonTile.tostring()=='p'):
+                        protectors += 1
+                right = [y+1,x+1]
+                if(inRange(right[0]) and inRange(right[1])):
+                    if(gametiles[y+1][x+1].pieceonTile.tostring()=='p'):    
+                        protectors += 1
+            return protectors
+
         for x in range(8):
             for y in range(8):
+                    piece = gametiles[y][x]
                     if gametiles[y][x].pieceonTile.tostring()=='P':
                         value=value-100
 
+                        # Improves evaluation when pawns protect a piece
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value - 2
+                        elif(pawnProtectors == 2):
+                            value= value - 4
+                        
+                        
                     if gametiles[y][x].pieceonTile.tostring()=='N':
                         value=value-350
+
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value - 2
+                        elif(pawnProtectors == 2):
+                            value= value - 4
 
                     if gametiles[y][x].pieceonTile.tostring()=='B':
                         value=value-350
 
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value - 2
+                        elif(pawnProtectors == 2):
+                            value= value - 4
+
                     if gametiles[y][x].pieceonTile.tostring()=='R':
                         value=value-525
+
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value - 2
+                        elif(pawnProtectors == 2):
+                            value= value - 4
 
                     if gametiles[y][x].pieceonTile.tostring()=='Q':
                         value=value-1000
 
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value - 2
+                        elif(pawnProtectors == 2):
+                            value= value - 4
+
                     if gametiles[y][x].pieceonTile.tostring()=='K':
                         value=value-10000
+
 
                     if gametiles[y][x].pieceonTile.tostring()=='p':
                         value=value+100
 
+                        # Improves evaluation when pawns protect eachother
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value + 2
+                        elif(pawnProtectors == 2):
+                            value= value + 4
+
                     if gametiles[y][x].pieceonTile.tostring()=='n':
                         value=value+350
+
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value + 2
+                        elif(pawnProtectors == 2):
+                            value= value + 4
 
                     if gametiles[y][x].pieceonTile.tostring()=='b':
                         value=value+350
 
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value + 2
+                        elif(pawnProtectors == 2):
+                            value= value + 4
+
                     if gametiles[y][x].pieceonTile.tostring()=='r':
                         value=value+525
+
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value + 2
+                        elif(pawnProtectors == 2):
+                            value= value + 4
 
                     if gametiles[y][x].pieceonTile.tostring()=='q':
                         value=value+1000
 
+                        pawnProtectors = protectedByPawn(piece)
+                        if(pawnProtectors == 1):
+                            value= value + 2
+                        elif(pawnProtectors == 2):
+                            value= value + 4
+
                     if gametiles[y][x].pieceonTile.tostring()=='k':
                         value=value+10000
+
+
 
         return value
 

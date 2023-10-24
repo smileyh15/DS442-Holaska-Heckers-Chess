@@ -280,6 +280,50 @@ class AI:
                     if(gametiles[y+1][x+1].pieceonTile.tostring()=='p'):    
                         protectors += 1
                 return protectors * 1
+        def attackedByPawn(piece):
+            attackers = 0
+            piece_text = piece.pieceonTile.tostring()
+            if(piece_text.lower() == piece_text):
+                left = [y-1,x-1]
+                if(inRange(left[0]) and inRange(left[1])):
+                    if(gametiles[y-1][x-1].pieceonTile.tostring()=='P'):
+                        attackers += 1
+                right = [y-1,x+1]
+                if(inRange(right[0]) and inRange(right[1])):
+                    if(gametiles[y-1][x+1].pieceonTile.tostring()=='P'):    
+                        attackers += 1
+                return attackers * -1
+            else:
+                left = [y+1,x-1]
+                if(inRange(left[0]) and inRange(left[1])):
+                    if(gametiles[y+1][x-1].pieceonTile.tostring()=='p'):
+                        attackers += 1
+                right = [y+1,x+1]
+                if(inRange(right[0]) and inRange(right[1])):
+                    if(gametiles[y+1][x+1].pieceonTile.tostring()=='p'):    
+                        attackers += 1
+                return attackers * 1
+        def queenDeepEval(piece):
+            val = 0
+            moves = piece.pieceonTile.legalmoveb(gametiles)
+            val += len(moves) if moves != None else 0 # the more mobility the better the square
+            return val*-1 if piece.pieceonTile.tostring() == "Q" else val
+        def rookDeepEval(piece):
+            val = 0
+            moves = piece.pieceonTile.legalmoveb(gametiles)
+            val += len(moves) if moves != None else 0 # the more mobility the better the square
+            return val*-1 if piece.pieceonTile.tostring() == "R" else val
+        def knightDeepEval(piece):
+            val = 0
+            moves = piece.pieceonTile.legalmoveb(gametiles)
+            val += len(moves) if moves != None else 0 # the more mobility the better the square
+            return val*-1 if piece.pieceonTile.tostring() == "N" else val
+        def bishopDeepEval(piece):
+            val = 0
+            moves = piece.pieceonTile.legalmoveb(gametiles)
+            val += len(moves) if moves != None else 0# the more mobility the better the square
+            return val*-1 if piece.pieceonTile.tostring() == "B" else val
+            
 
         for x in range(8):
             for y in range(8):
@@ -290,27 +334,31 @@ class AI:
                         # Improves evaluation when pawns protect a piece
                         value = value + protectedByPawn(piece)*4
                         
-                        
-                        
                     if gametiles[y][x].pieceonTile.tostring()=='N':
                         value=value-350
 
                         value = value + protectedByPawn(piece)*3
+                        value = value + knightDeepEval(piece)
+                        
 
                     if gametiles[y][x].pieceonTile.tostring()=='B':
                         value=value-350
 
                         value = value + protectedByPawn(piece)*3
+                        value = value + bishopDeepEval(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='R':
                         value=value-525
 
                         value = value + protectedByPawn(piece)*2
+                        value = value + rookDeepEval(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='Q':
                         value=value-1000
 
                         value = value + protectedByPawn(piece)*1
+                        value = value + queenDeepEval(piece)
+                        value = value + attackedByPawn(piece)*1000
 
                     if gametiles[y][x].pieceonTile.tostring()=='K':
                         value=value-10000
@@ -326,21 +374,26 @@ class AI:
                         value=value+350
 
                         value = value + protectedByPawn(piece)*3
+                        value = value + knightDeepEval(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='b':
                         value=value+350
 
                         value = value + protectedByPawn(piece)*3
+                        value = value + bishopDeepEval(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='r':
                         value=value+525
 
                         value = value + protectedByPawn(piece)*2
+                        value = value + knightDeepEval(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='q':
                         value=value+1000
 
                         value = value + protectedByPawn(piece)*1
+                        value = value + queenDeepEval(piece)
+                        value = value + attackedByPawn(piece)*1000
 
                     if gametiles[y][x].pieceonTile.tostring()=='k':
                         value=value+10000

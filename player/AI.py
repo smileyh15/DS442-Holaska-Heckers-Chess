@@ -303,26 +303,85 @@ class AI:
                     if(gametiles[y+1][x+1].pieceonTile.tostring()=='p'):    
                         attackers += 1
                 return attackers * 1
+
         def queenDeepEval(piece):
             val = 0
             moves = piece.pieceonTile.legalmoveb(gametiles)
             val += len(moves) if moves != None else 0 # the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "Q" else val
+        
         def rookDeepEval(piece):
             val = 0
             moves = piece.pieceonTile.legalmoveb(gametiles)
-            val += len(moves) if moves != None else 0 # the more mobility the better the square
+            alliance = piece.pieceonTile.alliance
+            if moves != None:
+                for move in moves:
+                    target = getPieceOnTile(move[1],move[0])
+                    if(target.tostring() != None and target.alliance != alliance):
+                        target_text = target.tostring().upper()
+                        if  target_text == "B" or target_text == "N":
+                            val += 10
+                        if target_text == "R":
+                            val += 100
+                        if target_text == "Q":
+                            val += 400
+                        if target_text == "K":
+                            val += 400
+            val += len(moves) if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "R" else val
         def knightDeepEval(piece):
             val = 0
             moves = piece.pieceonTile.legalmoveb(gametiles)
-            val += len(moves) if moves != None else 0 # the more mobility the better the square
+            alliance = piece.pieceonTile.alliance
+            if moves != None:
+                for move in moves:
+                    target = getPieceOnTile(move[1],move[0])
+                    if(target.tostring() != None and target.alliance != alliance):
+                        target_text = target.tostring().upper()
+                        if  target_text == "B" or target_text == "N":
+                            val += 20
+                        if target_text == "R":
+                            val += 200
+                        if target_text == "Q":
+                            val += 500
+                        if target_text == "K":
+                            val += 600
+            val += len(moves) if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "N" else val
         def bishopDeepEval(piece):
             val = 0
             moves = piece.pieceonTile.legalmoveb(gametiles)
+            alliance = piece.pieceonTile.alliance
+            if moves != None:
+                for move in moves:
+                    target = getPieceOnTile(move[1],move[0])
+                    if(target.tostring() != None and target.alliance != alliance):
+                        target_text = target.tostring().upper()
+                        if  target_text == "B" or target_text == "N":
+                            val += 20
+                        if target_text == "R":
+                            val += 200
+                        if target_text == "Q":
+                            val += 500
+                        if target_text == "K":
+                            val += 600
             val += len(moves) if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "B" else val
+        def boardControl(piece):
+            val = 0
+            if piece.pieceonTile.tostring() == "P":
+                position = piece.pieceonTile.calculatecoordinates()
+                val = -1*(val + 7 - position[1])
+                if position[1] == 7:
+                    val = val - 300
+            elif piece.pieceonTile.tostring() == "p":
+                position = piece.pieceonTile.calculatecoordinates()
+                val = val + position[1]
+                if position[1] == 0:
+                    val = val + 300
+            return val
+        def getPieceOnTile(y,x):
+            return gametiles[y][x].pieceonTile
             
 
         for x in range(8):
@@ -332,7 +391,8 @@ class AI:
                         value=value-100
 
                         # Improves evaluation when pawns protect a piece
-                        value = value + protectedByPawn(piece)*20
+                        value = value + protectedByPawn(piece)*5
+                        value = value + boardControl(piece)*4
                         
                     if gametiles[y][x].pieceonTile.tostring()=='N':
                         value=value-350
@@ -371,7 +431,8 @@ class AI:
                         value=value+100
 
                         # Improves evaluation when pawns protect eachother forming chains
-                        value = value + protectedByPawn(piece)*20
+                        value = value + protectedByPawn(piece)*5
+                        value = value + boardControl(piece)*4
 
                     if gametiles[y][x].pieceonTile.tostring()=='n':
                         value=value+350

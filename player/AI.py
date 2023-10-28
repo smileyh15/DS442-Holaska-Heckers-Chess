@@ -307,7 +307,17 @@ class AI:
         def queenDeepEval(piece):
             val = 0
             moves = piece.pieceonTile.legalmoveb(gametiles)
-            val += len(moves) if moves != None else 0 # the more mobility the better the square
+            alliance = piece.pieceonTile.alliance
+            if moves != None:
+                for move in moves:
+                    target = getPieceOnTile(move[1],move[0])
+                    if(target.tostring() != None and target.alliance != alliance):
+                        target_text = target.tostring().upper()
+                        if target_text == "N":
+                            val += 100
+                        if target_text == "K":
+                            val += 100
+            val += len(moves) if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "Q" else val
         
         def rookDeepEval(piece):
@@ -320,13 +330,9 @@ class AI:
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
                         if  target_text == "B" or target_text == "N":
-                            val += 10
-                        if target_text == "R":
                             val += 100
-                        if target_text == "Q":
-                            val += 400
                         if target_text == "K":
-                            val += 400
+                            val += 100
             val += len(moves) if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "R" else val
         def knightDeepEval(piece):
@@ -338,14 +344,14 @@ class AI:
                     target = getPieceOnTile(move[1],move[0])
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
-                        if  target_text == "B" or target_text == "N":
+                        if  target_text == "B":
                             val += 20
                         if target_text == "R":
-                            val += 200
+                            val += 80
                         if target_text == "Q":
-                            val += 500
+                            val += 90
                         if target_text == "K":
-                            val += 600
+                            val += 100
             val += len(moves) if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "N" else val
         def bishopDeepEval(piece):
@@ -357,16 +363,33 @@ class AI:
                     target = getPieceOnTile(move[1],move[0])
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
+                        if target_text == "N":
+                            val += 20
+                        if target_text == "R":
+                            val += 90
+                        if target_text == "K":
+                            val += 100
+            val += len(moves) if moves != None else 0# the more mobility the better the square
+            return val*-1 if piece.pieceonTile.tostring() == "B" else val
+        def pawnDeepEval(piece):
+            val = 0
+            moves = piece.pieceonTile.legalmoveb(gametiles)
+            alliance = piece.pieceonTile.alliance
+            if moves != None:
+                for move in moves:
+                    target = getPieceOnTile(move[1],move[0])
+                    if(target.tostring() != None and target.alliance != alliance):
+                        target_text = target.tostring().upper()
                         if  target_text == "B" or target_text == "N":
                             val += 20
                         if target_text == "R":
-                            val += 200
-                        if target_text == "Q":
-                            val += 500
+                            val += 30
+                        if target_text == "Q":#CHANGE THIS TO MAKE SURE IT IS TARGETIUNG THE CORREC TEAM 
+                            val += 40
                         if target_text == "K":
-                            val += 600
+                            val += 60
             val += len(moves) if moves != None else 0# the more mobility the better the square
-            return val*-1 if piece.pieceonTile.tostring() == "B" else val
+            return val*-1 if piece.pieceonTile.tostring() == "P" else val
         def boardControl(piece):
             val = 0
             if piece.pieceonTile.tostring() == "P":
@@ -392,6 +415,7 @@ class AI:
 
                         # Improves evaluation when pawns protect a piece
                         value = value + protectedByPawn(piece)*5
+                        value = value + pawnDeepEval(piece)
                         value = value + boardControl(piece)*4
                         
                     if gametiles[y][x].pieceonTile.tostring()=='N':
@@ -432,6 +456,7 @@ class AI:
 
                         # Improves evaluation when pawns protect eachother forming chains
                         value = value + protectedByPawn(piece)*5
+                        value = value + pawnDeepEval(piece)
                         value = value + boardControl(piece)*4
 
                     if gametiles[y][x].pieceonTile.tostring()=='n':

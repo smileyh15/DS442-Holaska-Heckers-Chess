@@ -437,6 +437,8 @@ class AI:
 
                 # Not sure what the inRange line exactly does so it is not currently included
 
+                # inRange just makes sure the space you are checking is actually a spot on the board because the game crashes if it's not
+
                 # This code checks each of the spots an attacking knight could be
                 # If there is a knight in a position to attack any opposing piece, the number of attackers += 1
                 if(gametiles[y-2][x+1].pieceonTile.toString()=='N'):

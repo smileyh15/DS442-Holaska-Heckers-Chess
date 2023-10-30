@@ -405,7 +405,97 @@ class AI:
             return val
         def getPieceOnTile(y,x):
             return gametiles[y][x].pieceonTile
+        
+
+
+
+
+
+
+
+
+        # Functions below here were made by Heckers, might need some refining
+        # I'll make sure to leave comments to let you walk through my thought process
+        # NOTICE: None of these are implemented into evaluating each moves value, just created the functions
+
+
+        def attackedByKnight(piece):
+            attackers = 0
+            piece_text = piece.pieceonTile.tostring()
+            if(piece_text.lower() == piece_text):
+                
+            # First part is the 2 space move, second is the one space: Ex: LeftUp = attacker moves 2 spaces left, 1 space up
+            # This is just following the same pattern as the pawn version of the attack function
+                upLeft = [y-2,x+1] 
+                upRight = [y-2,x-1] 
+                rightUp = [y-1,x-2] 
+                rightDown = [y+1,x-2] 
+                downRight = [y+2,x-1] 
+                downLeft = [y+2,x+1] 
+                leftDown = [y+1, x+2] 
+                leftUp = [y-1,x+2]
+
+                # Not sure what the inRange line exactly does so it is not currently included
+
+                # This code checks each of the spots an attacking knight could be
+                # If there is a knight in a position to attack any opposing piece, the number of attackers += 1
+                if(gametiles[y-2][x+1].pieceonTile.toString()=='N'):
+                    attackers += 1
+                if(gametiles[y-2][x-1].pieceonTile.toString()=='N'):
+                    attackers += 1
+                if(gametiles[y-1][x-2].pieceonTile.toString()=='N'):
+                    attackers += 1
+                if(gametiles[y+1][x-2].pieceonTile.toString()=='N'):
+                    attackers += 1
+                if(gametiles[y+2][x-1].pieceonTile.toString()=='N'):
+                    attackers += 1
+                if(gametiles[y+2][x+1].pieceonTile.toString()=='N'):
+                    attackers += 1
+                if(gametiles[y+1][x+2].pieceonTile.toString()=='N'):
+                    attackers += 1
+                if(gametiles[y-1][x+2].pieceonTile.toString()=='N'):
+                    attackers += 1
+
+                return attackers * -1
             
+            # This is the same as the previous group of code but for the other player
+            else:
+                if(gametiles[y+2][x-1].pieceonTile.toString()=='n'):
+                    attackers += 1
+                if(gametiles[y+2][x+1].pieceonTile.toString()=='n'):
+                    attackers += 1
+                if(gametiles[y+1][x+2].pieceonTile.toString()=='n'):
+                    attackers += 1
+                if(gametiles[y-1][x+2].pieceonTile.toString()=='n'):
+                    attackers += 1
+                if(gametiles[y-2][x+1].pieceonTile.toString()=='n'):
+                    attackers += 1
+                if(gametiles[y-2][x-1].pieceonTile.toString()=='n'):
+                    attackers += 1
+                if(gametiles[y-1][x-2].pieceonTile.toString()=='n'):
+                    attackers += 1
+                if(gametiles[y+1][x-2].pieceonTile.toString()=='n'):
+                    attackers += 1
+                return attackers * 1
+            
+
+        
+        # Will add attack functions for other pieces
+
+
+
+        # Ends the group of functions made by Heckers
+
+
+
+
+
+
+
+
+
+
+
 
         for x in range(8):
             for y in range(8):

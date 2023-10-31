@@ -253,30 +253,31 @@ class AI:
     def calculateb(self,gametiles):
         value=0
 
-        def inRange(val):
-            if(val < 8 and val > 0):
-                return True
+        def inRange(y,x):
+            if(y < 8 and y > 0):
+                if(x < 8 and x > 0):
+                    return True
             return False
         def protectedByPawn(piece):
             protectors = 0
             piece_text = piece.pieceonTile.tostring()
             if(piece_text.upper() == piece_text):
                 left = [y-1,x-1]
-                if(inRange(left[0]) and inRange(left[1])):
+                if(inRange(left[0],left[1])):
                     if(gametiles[y-1][x-1].pieceonTile.tostring()=='P'):
                         protectors += 1
                 right = [y-1,x+1]
-                if(inRange(right[0]) and inRange(right[1])):
+                if(inRange(right[0],right[1])):
                     if(gametiles[y-1][x+1].pieceonTile.tostring()=='P'):    
                         protectors += 1
                 return protectors * -1
             else:
                 left = [y+1,x-1]
-                if(inRange(left[0]) and inRange(left[1])):
+                if(inRange(left[0],left[1])):
                     if(gametiles[y+1][x-1].pieceonTile.tostring()=='p'):
                         protectors += 1
                 right = [y+1,x+1]
-                if(inRange(right[0]) and inRange(right[1])):
+                if(inRange(right[0],right[1])):
                     if(gametiles[y+1][x+1].pieceonTile.tostring()=='p'):    
                         protectors += 1
                 return protectors * 1
@@ -285,25 +286,50 @@ class AI:
             piece_text = piece.pieceonTile.tostring()
             if(piece_text.lower() == piece_text):
                 left = [y-1,x-1]
-                if(inRange(left[0]) and inRange(left[1])):
+                if(inRange(left[0],left[1])):
                     if(gametiles[y-1][x-1].pieceonTile.tostring()=='P'):
                         attackers += 1
                 right = [y-1,x+1]
-                if(inRange(right[0]) and inRange(right[1])):
+                if(inRange(right[0],right[1])):
                     if(gametiles[y-1][x+1].pieceonTile.tostring()=='P'):    
                         attackers += 1
                 return attackers * -1
             else:
                 left = [y+1,x-1]
-                if(inRange(left[0]) and inRange(left[1])):
+                if(inRange(left[0],left[1])):
                     if(gametiles[y+1][x-1].pieceonTile.tostring()=='p'):
                         attackers += 1
                 right = [y+1,x+1]
-                if(inRange(right[0]) and inRange(right[1])):
+                if(inRange(right[0],right[1])):
                     if(gametiles[y+1][x+1].pieceonTile.tostring()=='p'):    
                         attackers += 1
                 return attackers * 1
-
+        def protectedByBishop(piece):
+            protectors = 0
+            piece_text = piece.pieceonTile.tostring()
+            location = piece.pieceonTile.calculatecoordinates()
+            directions = [[-1,-1],[1,-1],[-1,1],[1,1]]
+            upLeft = [-1,-1] #(x,y)
+            upright = [1,-1] #(x,y)
+            downLeft = [-1,1] #(x,y)
+            downright = [1,1] #(x,y)
+            for i in range(0,4):
+                for j in range(0,8):
+                    targety,targetx = location[0]+(j*directions[i][1]),location[1]+(j*directions[i][0])
+                    if(inRange(targety,targetx)):
+                        target = gametiles[targety][targetx].pieceonTile.tostring()
+                        if(target != None):
+                            if (piece.pieceonTile.alliance == "Black"):
+                                if(target != "B"):
+                                    continue
+                                else:
+                                    protectors -= 1
+                            if (piece.pieceonTile.alliance == "White"):
+                                if(target != "W"):
+                                    continue
+                                else:
+                                    protectors += 1
+            return protectors
         def queenDeepEval(piece):
             val = 0
             moves = piece.pieceonTile.legalmoveb(gametiles)
@@ -314,10 +340,12 @@ class AI:
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
                         if target_text == "N":
-                            val += 100
+                            val += 1
+                        if target_text == "Q":
+                            val -= 5
                         if target_text == "K":
-                            val += 100
-            val += len(moves) if moves != None else 0# the more mobility the better the square
+                            val += 10
+            val += len(moves)/2 if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "Q" else val
         
         def rookDeepEval(piece):
@@ -330,10 +358,12 @@ class AI:
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
                         if  target_text == "B" or target_text == "N":
-                            val += 100
+                            val += 1
+                        if target_text == "Q":
+                            val -= 2
                         if target_text == "K":
-                            val += 100
-            val += len(moves) if moves != None else 0# the more mobility the better the square
+                            val += 4
+            val += len(moves)/2 if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "R" else val
         def knightDeepEval(piece):
             val = 0
@@ -345,14 +375,14 @@ class AI:
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
                         if  target_text == "B":
-                            val += 20
+                            val += 1
                         if target_text == "R":
-                            val += 80
+                            val += 2
                         if target_text == "Q":
-                            val += 90
+                            val += 3
                         if target_text == "K":
-                            val += 100
-            val += len(moves) if moves != None else 0# the more mobility the better the square
+                            val += 4
+            val += len(moves)/2 if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "N" else val
         def bishopDeepEval(piece):
             val = 0
@@ -364,12 +394,14 @@ class AI:
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
                         if target_text == "N":
-                            val += 20
+                            val += 2
                         if target_text == "R":
-                            val += 90
+                            val += 3
+                        if target_text == "Q":
+                            val -= 2
                         if target_text == "K":
-                            val += 100
-            val += len(moves) if moves != None else 0# the more mobility the better the square
+                            val += 5
+            val += len(moves)/2 if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "B" else val
         def pawnDeepEval(piece):
             val = 0
@@ -381,27 +413,27 @@ class AI:
                     if(target.tostring() != None and target.alliance != alliance):
                         target_text = target.tostring().upper()
                         if  target_text == "B" or target_text == "N":
-                            val += 20
+                            val += 1
                         if target_text == "R":
-                            val += 30
+                            val += 1
                         if target_text == "Q":#CHANGE THIS TO MAKE SURE IT IS TARGETIUNG THE CORREC TEAM 
-                            val += 40
+                            val += 1
                         if target_text == "K":
-                            val += 60
+                            val += 1
             val += len(moves) if moves != None else 0# the more mobility the better the square
             return val*-1 if piece.pieceonTile.tostring() == "P" else val
         def boardControl(piece):
             val = 0
             if piece.pieceonTile.tostring() == "P":
                 position = piece.pieceonTile.calculatecoordinates()
-                val = -1*(val + 7 - position[1])
+                val = -1*(val + position[1])*2
                 if position[1] == 7:
-                    val = val - 300
+                    val = val - 100
             elif piece.pieceonTile.tostring() == "p":
                 position = piece.pieceonTile.calculatecoordinates()
-                val = val + position[1]
+                val = (val + 7 - position[1])*2
                 if position[1] == 0:
-                    val = val + 300
+                    val = val + 100
             return val
         def getPieceOnTile(y,x):
             return gametiles[y][x].pieceonTile
@@ -506,38 +538,43 @@ class AI:
                         value=value-100
 
                         # Improves evaluation when pawns protect a piece
-                        value = value + protectedByPawn(piece)*5
+                        value = value + protectedByPawn(piece)
                         value = value + pawnDeepEval(piece)
-                        value = value + boardControl(piece)*4
+                        value = value + boardControl(piece)
+                        #value = value + protectedByBishop(piece)
                         
                     if gametiles[y][x].pieceonTile.tostring()=='N':
                         value=value-350
 
-                        value = value + protectedByPawn(piece)*3
+                        value = value + protectedByPawn(piece)*2
                         value = value + knightDeepEval(piece)
-                        value = value + attackedByPawn(piece)*300
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
                         
 
                     if gametiles[y][x].pieceonTile.tostring()=='B':
                         value=value-350
 
-                        value = value + protectedByPawn(piece)*3
+                        value = value + protectedByPawn(piece)*2
                         value = value + bishopDeepEval(piece)
-                        value = value + attackedByPawn(piece)*300
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='R':
                         value=value-525
 
-                        value = value + protectedByPawn(piece)*2
+                        value = value + protectedByPawn(piece)*3
                         value = value + rookDeepEval(piece)
-                        value = value + attackedByPawn(piece)*500
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='Q':
                         value=value-1000
 
-                        value = value + protectedByPawn(piece)*1
+                        value = value + protectedByPawn(piece)*4
                         value = value + queenDeepEval(piece)
-                        value = value + attackedByPawn(piece)*1000
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='K':
                         value=value-10000
@@ -547,37 +584,42 @@ class AI:
                         value=value+100
 
                         # Improves evaluation when pawns protect eachother forming chains
-                        value = value + protectedByPawn(piece)*5
+                        value = value + protectedByPawn(piece)
                         value = value + pawnDeepEval(piece)
-                        value = value + boardControl(piece)*4
+                        value = value + boardControl(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='n':
                         value=value+350
 
-                        value = value + protectedByPawn(piece)*3
+                        value = value + protectedByPawn(piece)*2
                         value = value + knightDeepEval(piece)
-                        value = value + attackedByPawn(piece)*300
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='b':
                         value=value+350
 
-                        value = value + protectedByPawn(piece)*3
+                        value = value + protectedByPawn(piece)*2
                         value = value + bishopDeepEval(piece)
-                        value = value + attackedByPawn(piece)*300
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='r':
                         value=value+525
 
-                        value = value + protectedByPawn(piece)*2
-                        value = value + knightDeepEval(piece)
-                        value = value + attackedByPawn(piece)*500
+                        value = value + protectedByPawn(piece)*3
+                        value = value + rookDeepEval(piece)
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='q':
                         value=value+1000
 
-                        value = value + protectedByPawn(piece)*1
+                        value = value + protectedByPawn(piece)*4
                         value = value + queenDeepEval(piece)
-                        value = value + attackedByPawn(piece)*1000
+                        value = value + attackedByPawn(piece)
+                        #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='k':
                         value=value+10000

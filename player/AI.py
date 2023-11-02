@@ -451,21 +451,21 @@ class AI:
         # NOTICE: None of these are implemented into evaluating each moves value, just created the functions
 
 
-        def attackedByKnight(piece):
-            attackers = 0
-            piece_text = piece.pieceonTile.tostring()
-            if(piece_text.lower() == piece_text):
+        # def attackedByKnight(piece):
+        #     attackers = 0
+        #     piece_text = piece.pieceonTile.tostring()
+        #     if(piece_text.lower() == piece_text):
                 
             # First part is the 2 space move, second is the one space: Ex: LeftUp = attacker moves 2 spaces left, 1 space up
             # This is just following the same pattern as the pawn version of the attack function
-                upLeft = [y-2,x+1] 
-                upRight = [y-2,x-1] 
-                rightUp = [y-1,x-2] 
-                rightDown = [y+1,x-2] 
-                downRight = [y+2,x-1] 
-                downLeft = [y+2,x+1] 
-                leftDown = [y+1, x+2] 
-                leftUp = [y-1,x+2]
+                # upLeft = [y-2,x+1] 
+                # upRight = [y-2,x-1] 
+                # rightUp = [y-1,x-2] 
+                # rightDown = [y+1,x-2] 
+                # downRight = [y+2,x-1] 
+                # downLeft = [y+2,x+1] 
+                # leftDown = [y+1, x+2] 
+                # leftUp = [y-1,x+2]
 
                 # Not sure what the inRange line exactly does so it is not currently included
 
@@ -541,6 +541,20 @@ class AI:
                     if(gametiles[y][x].pieceonTile.tostring() == 'p'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
                     return opponentPieces
+                
+
+
+
+        def pawnAdvancement(piece):
+            val = 0
+            if piece.pieceonTile.tostring() == "P":
+                position = piece.pieceonTile.calculatecoordinates()
+                val = position[0] * 4
+            else:
+                val = 0
+
+            return val
+
 
 
 
@@ -568,6 +582,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)
                             value = value + boardControl(piece)  
+                            value = value + pawnAdvancement(piece)
                            
                         else:
                              # Improves evaluation when pawns protect a piece
@@ -582,6 +597,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
                         
                         else:
 
@@ -597,6 +613,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
                         
                         else:
 
@@ -613,6 +630,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)*3
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
                         
                         else:
 
@@ -627,6 +645,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)*4
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
                         
                         else:
 

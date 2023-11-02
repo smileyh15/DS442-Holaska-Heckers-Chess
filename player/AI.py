@@ -549,7 +549,7 @@ class AI:
             val = 0
             if piece.pieceonTile.tostring() == "P":
                 position = piece.pieceonTile.calculatecoordinates()
-                val = position[0] * 4
+                val = position[1] * 4
             else:
                 val = 0
 
@@ -664,6 +664,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)
                             value = value + boardControl(piece)
+                            value = value + pawnAdvancement(piece)
 
 
                         else:
@@ -680,6 +681,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
 
 
                         else:
@@ -695,6 +697,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
 
                         else:
 
@@ -709,6 +712,7 @@ class AI:
                         if(countOpponentPieces() == 1):
                             value = value + protectedByPawn(piece)*3
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
 
                         else:
 
@@ -724,6 +728,7 @@ class AI:
 
                             value = value + protectedByPawn(piece)*4
                             value = value + attackedByPawn(piece)
+                            value = value + pawnAdvancement(piece)
 
                         else:
 

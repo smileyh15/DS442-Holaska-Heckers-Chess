@@ -561,6 +561,7 @@ class AI:
 
         for x in range(8):
             for y in range(8):
+                    piece = gametiles[y][x]
                     if gametiles[y][x].pieceonTile.tostring()=='P':
                         value=value-100
 

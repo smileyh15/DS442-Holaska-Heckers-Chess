@@ -473,44 +473,44 @@ class AI:
 
                 # This code checks each of the spots an attacking knight could be
                 # If there is a knight in a position to attack any opposing piece, the number of attackers += 1
-                if(gametiles[y-2][x+1].pieceonTile.toString()=='N'):
-                    attackers += 1
-                if(gametiles[y-2][x-1].pieceonTile.toString()=='N'):
-                    attackers += 1
-                if(gametiles[y-1][x-2].pieceonTile.toString()=='N'):
-                    attackers += 1
-                if(gametiles[y+1][x-2].pieceonTile.toString()=='N'):
-                    attackers += 1
-                if(gametiles[y+2][x-1].pieceonTile.toString()=='N'):
-                    attackers += 1
-                if(gametiles[y+2][x+1].pieceonTile.toString()=='N'):
-                    attackers += 1
-                if(gametiles[y+1][x+2].pieceonTile.toString()=='N'):
-                    attackers += 1
-                if(gametiles[y-1][x+2].pieceonTile.toString()=='N'):
-                    attackers += 1
+            #     if(gametiles[y-2][x+1].pieceonTile.tostring()=='N'):
+            #         attackers += 1
+            #     if(gametiles[y-2][x-1].pieceonTile.tostring()=='N'):
+            #         attackers += 1
+            #     if(gametiles[y-1][x-2].pieceonTile.tostring()=='N'):
+            #         attackers += 1
+            #     if(gametiles[y+1][x-2].pieceonTile.tostring()=='N'):
+            #         attackers += 1
+            #     if(gametiles[y+2][x-1].pieceonTile.tostring()=='N'):
+            #         attackers += 1
+            #     if(gametiles[y+2][x+1].pieceonTile.toString()=='N'):
+            #         attackers += 1
+            #     if(gametiles[y+1][x+2].pieceonTile.toString()=='N'):
+            #         attackers += 1
+            #     if(gametiles[y-1][x+2].pieceonTile.toString()=='N'):
+            #         attackers += 1
 
-                return attackers * -1
+            #     return attackers * -1
             
-            # This is the same as the previous group of code but for the other player
-            else:
-                if(gametiles[y+2][x-1].pieceonTile.toString()=='n'):
-                    attackers += 1
-                if(gametiles[y+2][x+1].pieceonTile.toString()=='n'):
-                    attackers += 1
-                if(gametiles[y+1][x+2].pieceonTile.toString()=='n'):
-                    attackers += 1
-                if(gametiles[y-1][x+2].pieceonTile.toString()=='n'):
-                    attackers += 1
-                if(gametiles[y-2][x+1].pieceonTile.toString()=='n'):
-                    attackers += 1
-                if(gametiles[y-2][x-1].pieceonTile.toString()=='n'):
-                    attackers += 1
-                if(gametiles[y-1][x-2].pieceonTile.toString()=='n'):
-                    attackers += 1
-                if(gametiles[y+1][x-2].pieceonTile.toString()=='n'):
-                    attackers += 1
-                return attackers * 1
+            # # This is the same as the previous group of code but for the other player
+            # else:
+            #     if(gametiles[y+2][x-1].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     if(gametiles[y+2][x+1].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     if(gametiles[y+1][x+2].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     if(gametiles[y-1][x+2].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     if(gametiles[y-2][x+1].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     if(gametiles[y-2][x-1].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     if(gametiles[y-1][x-2].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     if(gametiles[y+1][x-2].pieceonTile.toString()=='n'):
+            #         attackers += 1
+            #     return attackers * 1
         # Will add attack functions for other pieces
 
 
@@ -526,19 +526,19 @@ class AI:
                 for y in range(8):
                     piece = gametiles[y][x]
                     piece_text = piece.pieceonTile.tostring()
-                    
 
-                    if(gametiles[y][x].pieceonTile.toString() == 'k'): # checking the piece string, if its an opponent piece, add 1 to count
+
+                    if(gametiles[y][x].pieceonTile.tostring() == 'k'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].pieceonTile.toString() == 'q'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.tostring() == 'q'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].pieceonTile.toString() == 'b'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.tostring() == 'b'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].pieceonTile.toString() == 'n'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.tostring() == 'n'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].pieceonTile.toString() == 'r'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.tostring() == 'r'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].pieceonTile.toString() == 'p'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.tostring() == 'p'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
                     return opponentPieces
 

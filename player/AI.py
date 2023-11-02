@@ -522,20 +522,23 @@ class AI:
 
         def countOpponentPieces():
             opponentPieces = 0
-            piece_text = piece.pieceonTile.tostring()
             for x in range(8):     # going through all the rows and columns on the board (all squares on board)
                 for y in range(8):
-                    if(gametiles[y][x].piece_text() == 'k'): # checking the piece string, if its an opponent piece, add 1 to count
+                    piece = gametiles[y][x]
+                    piece_text = piece.pieceonTile.tostring()
+                    
+
+                    if(gametiles[y][x].pieceonTile.toString() == 'k'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].piece_text() == 'q'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.toString() == 'q'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].piece_text() == 'b'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.toString() == 'b'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].piece_text() == 'n'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.toString() == 'n'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].piece_text() == 'r'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.toString() == 'r'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
-                    if(gametiles[y][x].piece_text() == 'p'): # checking the piece string, if its an opponent piece, add 1 to count
+                    if(gametiles[y][x].pieceonTile.toString() == 'p'): # checking the piece string, if its an opponent piece, add 1 to count
                         opponentPieces += 1
                     return opponentPieces
 
@@ -558,7 +561,6 @@ class AI:
 
         for x in range(8):
             for y in range(8):
-                    piece = gametiles[y][x]
                     if gametiles[y][x].pieceonTile.tostring()=='P':
                         value=value-100
 

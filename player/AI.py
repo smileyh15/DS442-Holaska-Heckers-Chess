@@ -561,7 +561,8 @@ class AI:
                         value=value-100
 
                         if(countOpponentPieces() == 1):
-                         return 0   # Added this to avoid error messages when if statement is left empty; replace with future evaluation functions for "end game"
+                            value = value + protectedByPawn(piece)
+                            value = value + boardControl(piece)  
                            
                         else:
                              # Improves evaluation when pawns protect a piece
@@ -574,7 +575,8 @@ class AI:
                         value=value-350
 
                         if(countOpponentPieces() == 1):
-                         return 0
+                            value = value + protectedByPawn(piece)*2
+                            value = value + attackedByPawn(piece)
                         
                         else:
 
@@ -588,7 +590,8 @@ class AI:
                         value=value-350
 
                         if(countOpponentPieces() == 1):
-                         return 0
+                            value = value + protectedByPawn(piece)*2
+                            value = value + attackedByPawn(piece)
                         
                         else:
 
@@ -603,7 +606,8 @@ class AI:
                         value=value-525
 
                         if(countOpponentPieces() == 1):
-                         return 0
+                            value = value + protectedByPawn(piece)*3
+                            value = value + attackedByPawn(piece)
                         
                         else:
 
@@ -616,7 +620,8 @@ class AI:
                         value=value-1000
 
                         if(countOpponentPieces() == 1):
-                         return 0
+                            value = value + protectedByPawn(piece)*4
+                            value = value + attackedByPawn(piece)
                         
                         else:
 
@@ -632,43 +637,76 @@ class AI:
                     if gametiles[y][x].pieceonTile.tostring()=='p':
                         value=value+100
 
-                        # Improves evaluation when pawns protect eachother forming chains
-                        value = value + protectedByPawn(piece)
-                        value = value + pawnDeepEval(piece)
-                        value = value + boardControl(piece)
-                        #value = value + protectedByBishop(piece)
+                        if(countOpponentPieces() == 1):
+                            value = value + protectedByPawn(piece)
+                            value = value + boardControl(piece)
+
+
+                        else:
+
+                            # Improves evaluation when pawns protect eachother forming chains
+                            value = value + protectedByPawn(piece)
+                            value = value + pawnDeepEval(piece)
+                            value = value + boardControl(piece)
+                            #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='n':
                         value=value+350
 
-                        value = value + protectedByPawn(piece)*2
-                        value = value + knightDeepEval(piece)
-                        value = value + attackedByPawn(piece)
-                        #value = value + protectedByBishop(piece)
+                        if(countOpponentPieces() == 1):
+                            value = value + protectedByPawn(piece)*2
+                            value = value + attackedByPawn(piece)
+
+
+                        else:
+
+                            value = value + protectedByPawn(piece)*2
+                            value = value + knightDeepEval(piece)
+                            value = value + attackedByPawn(piece)
+                            #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='b':
                         value=value+350
 
-                        value = value + protectedByPawn(piece)*2
-                        value = value + bishopDeepEval(piece)
-                        value = value + attackedByPawn(piece)
+                        if(countOpponentPieces() == 1):
+                            value = value + protectedByPawn(piece)*2
+                            value = value + attackedByPawn(piece)
+
+                        else:
+
+                            value = value + protectedByPawn(piece)*2
+                            value = value + bishopDeepEval(piece)
+                            value = value + attackedByPawn(piece)
                         #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='r':
                         value=value+525
 
-                        value = value + protectedByPawn(piece)*3
-                        value = value + rookDeepEval(piece)
-                        value = value + attackedByPawn(piece)
-                        #value = value + protectedByBishop(piece)
+                        if(countOpponentPieces() == 1):
+                            value = value + protectedByPawn(piece)*3
+                            value = value + attackedByPawn(piece)
+
+                        else:
+
+                            value = value + protectedByPawn(piece)*3
+                            value = value + rookDeepEval(piece)
+                            value = value + attackedByPawn(piece)
+                            #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='q':
                         value=value+1000
 
-                        value = value + protectedByPawn(piece)*4
-                        value = value + queenDeepEval(piece)
-                        value = value + attackedByPawn(piece)
-                        #value = value + protectedByBishop(piece)
+                        if(countOpponentPieces() == 1):
+
+                            value = value + protectedByPawn(piece)*4
+                            value = value + attackedByPawn(piece)
+
+                        else:
+
+                            value = value + protectedByPawn(piece)*4
+                            value = value + queenDeepEval(piece)
+                            value = value + attackedByPawn(piece)
+                            #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='k':
                         value=value+10000

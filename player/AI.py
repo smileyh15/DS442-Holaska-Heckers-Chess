@@ -556,7 +556,22 @@ class AI:
             return val
 
 
-
+        def checkForMate(piece):
+                piece_text = piece.pieceonTile.tostring()
+                if(gametiles[y][x].pieceonTile.tostring() == 'k'): 
+                    moves = gametiles[y][x].pieceonTile.legalmoveb(gametiles)
+                    if moves == None:
+                        return -99999999
+                    else: 
+                        return 0
+                if(gametiles[y][x].pieceonTile.tostring() == 'K'): 
+                    moves = gametiles[y][x].pieceonTile.legalmoveb(gametiles)
+                    if moves == None:
+                        return 99999999
+                    else: 
+                        return 0
+                return 0
+            
 
 
 
@@ -576,6 +591,7 @@ class AI:
         for x in range(8):
             for y in range(8):
                     piece = gametiles[y][x]
+                    
                     if gametiles[y][x].pieceonTile.tostring()=='P':
                         value=value-100
 
@@ -655,6 +671,7 @@ class AI:
                             #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='K':
+                        value = value + checkForMate(piece)
                         value=value-10000
 
 
@@ -738,6 +755,7 @@ class AI:
                             #value = value + protectedByBishop(piece)
 
                     if gametiles[y][x].pieceonTile.tostring()=='k':
+                        value = value + checkForMate(piece)
                         value=value+10000
 
 

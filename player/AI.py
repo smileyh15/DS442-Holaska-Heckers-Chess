@@ -549,7 +549,7 @@ class AI:
             val = 0
             if piece.pieceonTile.tostring() == "P":
                 position = piece.pieceonTile.calculatecoordinates()
-                val = position[1] * 4
+                val = position[1] * -50
             else:
                 val = 0
 
@@ -580,7 +580,7 @@ class AI:
                         value=value-100
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)
+                            #value = value + protectedByPawn(piece)
                             value = value + boardControl(piece)  
                             value = value + pawnAdvancement(piece)
                            
@@ -595,7 +595,7 @@ class AI:
                         value=value-350
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)*2
+                            #value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
                         
@@ -611,7 +611,7 @@ class AI:
                         value=value-350
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)*2
+                           # value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
                         
@@ -628,7 +628,7 @@ class AI:
                         value=value-525
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)*3
+                            #value = value + protectedByPawn(piece)*3
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
                         
@@ -643,7 +643,7 @@ class AI:
                         value=value-1000
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)*4
+                           # value = value + protectedByPawn(piece)*4
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
                         
@@ -662,7 +662,7 @@ class AI:
                         value=value+100
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)
+                           # value = value + protectedByPawn(piece)
                             value = value + boardControl(piece)
                             value = value + pawnAdvancement(piece)
 
@@ -679,7 +679,7 @@ class AI:
                         value=value+350
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)*2
+                           # value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
 
@@ -695,7 +695,7 @@ class AI:
                         value=value+350
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)*2
+                           # value = value + protectedByPawn(piece)*2
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
 
@@ -710,7 +710,7 @@ class AI:
                         value=value+525
 
                         if(countOpponentPieces() == 1):
-                            value = value + protectedByPawn(piece)*3
+                          #  value = value + protectedByPawn(piece)*3
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
 
@@ -726,7 +726,7 @@ class AI:
 
                         if(countOpponentPieces() == 1):
 
-                            value = value + protectedByPawn(piece)*4
+                           # value = value + protectedByPawn(piece)*4
                             value = value + attackedByPawn(piece)
                             value = value + pawnAdvancement(piece)
 

@@ -472,7 +472,7 @@ class AI:
             else:
                 piece.pieceonTile.tostring() == "Q"
                 position = piece.pieceonTile.calculatecoordinates()
-                val = position[1] * -50
+                val = position[1] * -100
 
             return val
 
